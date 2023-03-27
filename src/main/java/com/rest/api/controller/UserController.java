@@ -20,8 +20,8 @@ public class UserController {
     }
 
     @GetMapping
-    public @ResponseBody UserRepository findAllUsers() {
-        return userRepository;
+    public @ResponseBody Iterable<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
     @GetMapping("{userID}")
