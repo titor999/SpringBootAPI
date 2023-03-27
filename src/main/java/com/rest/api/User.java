@@ -11,10 +11,10 @@ import java.util.UUID;
 @Entity
 public class User {
 
-    URI image;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     UUID id;
+    URI image;
     String username, password, email;
 
     public URI getImage() {
