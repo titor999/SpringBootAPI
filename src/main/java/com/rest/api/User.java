@@ -1,9 +1,8 @@
 package com.rest.api;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.net.URI;
 import java.util.UUID;
@@ -13,9 +12,34 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    UUID id;
-    URI image;
-    String username, password, email;
+    private Long id;
+
+    @Column(nullable = false)
+    private URI image;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private String salt;
+
+    public User() {}
+
+    public User(URI image, String username, String email, String password) {
+        this.image = image;
+        this.username = username;
+        this.email = email;
+        this.salt = UUID.randomUUID().toString();
+        this.password = new BCryptPasswordEncoder().encode(password + this.salt);
+    }
 
     public URI getImage() {
         return image;
@@ -25,11 +49,11 @@ public class User {
         this.image = image;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,6 +65,7 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -55,6 +80,15 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }
 
