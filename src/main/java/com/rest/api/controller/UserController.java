@@ -18,19 +18,19 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public @ResponseBody Iterable<User> findAllUsers() {
+    public Iterable<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     @GetMapping("user/{userID}")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Optional<User> findUserByID(@PathVariable UUID userID) {
+    public Optional<User> findUserByID(@PathVariable UUID userID) {
         return userRepository.findById(userID);
     }
 
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Long addNewUser (@RequestBody User user) {
+    public Long addNewUser(@RequestBody User user) {
         userRepository.save(user);
         return user.getId();
     }
